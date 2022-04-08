@@ -10,8 +10,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private Text _connectionStatusText;
 
     [Header("Login UI Panel")]
-    [SerializeField] private InputField _playerNameInput;
     [SerializeField] private GameObject _loginUIPanel;
+    [SerializeField] private InputField _playerNameInput;
 
     [Header("Game Options UI Panel")]
     [SerializeField] private GameObject _gameOptionsUIPanel;
@@ -23,6 +23,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Inside Room UI Panel")]
     [SerializeField] private GameObject _insideRoomUIPanel;
+    [SerializeField] private GameObject _playerListPrefab;
+    [SerializeField] private GameObject _playerListParent;
+    [SerializeField] private GameObject _startGameButton;
+    [SerializeField] private Text _roomInfoText;
 
     [Header("Room List UI Panel")]
     [SerializeField] private GameObject _roomListUIPanel;
@@ -34,6 +38,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private Dictionary<string, RoomInfo> _cachedRoomList = new Dictionary<string, RoomInfo>();
     private Dictionary<string, GameObject> _roomListGameObjects = new Dictionary<string, GameObject>();
+    private Dictionary<int, GameObject> _playerListGameObjects;
 
     #region Unity Methods
 
@@ -82,6 +87,41 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _roomListGameObjects.Clear();
     }
 
+    private void InstantiatePlayer(Player player)
+    {
+        GameObject playerListGameObject = Instantiate(_playerListPrefab);
+        playerListGameObject.transform.SetParent(_playerListParent.transform);
+        playerListGameObject.transform.localScale = Vector3.one;
+
+        playerListGameObject.transform.Find("PlayerNameText").GetComponent<Text>().text = player.NickName;
+
+        _playerListGameObjects.Add(player.ActorNumber, playerListGameObject);
+
+        if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(true);
+            return;
+        }
+
+        playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
+    }
+
+    private void RoomInfoText()
+    {
+        _roomInfoText.text = "Room name: " + PhotonNetwork.CurrentRoom.Name + " Players/Max players: " + PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+    }
+
+    private void SetActivityOfStartGameButton()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            _startGameButton.SetActive(true);
+            return;
+        }
+
+        _startGameButton.SetActive(false);
+    }
+
     #endregion
 
     #region UI Callbacks
@@ -109,7 +149,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomName = "Room " + Random.Range(1000, 10000);
         }
 
-        if(string.IsNullOrEmpty(_maxPlayersInputField.text))
+        if(string.IsNullOrEmpty(_maxPlayersInputField.text)) // tutaj mozna wpisac wszystko
         {
             _maxPlayersInputField.text = "3";
         }
@@ -145,6 +185,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(_gameOptionsUIPanel.name);
     }
 
+    public void OnLeaveGameButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -169,6 +214,49 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log(PhotonNetwork.LocalPlayer.NickName + " joined to " + PhotonNetwork.CurrentRoom.Name);
         ActivatePanel(_insideRoomUIPanel.name);
+
+        SetActivityOfStartGameButton();
+
+        RoomInfoText();
+
+        if (_playerListGameObjects == null)
+        {
+            _playerListGameObjects = new Dictionary<int, GameObject>();
+        }
+
+        //Instantiating player list gameobjects
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            InstantiatePlayer(player);
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        RoomInfoText();
+        InstantiatePlayer(newPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        RoomInfoText();
+        Destroy(_playerListGameObjects[otherPlayer.ActorNumber].gameObject);
+        _playerListGameObjects.Remove(otherPlayer.ActorNumber);
+
+        SetActivityOfStartGameButton();
+    }
+
+    public override void OnLeftRoom()
+    {
+        ActivatePanel(_gameOptionsUIPanel.name);
+
+        foreach(GameObject playerListGameObject in _playerListGameObjects.Values)
+        {
+            Destroy(playerListGameObject);
+        }
+
+        _playerListGameObjects.Clear();
+        _playerListGameObjects = null;
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
