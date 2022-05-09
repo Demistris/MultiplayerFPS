@@ -45,6 +45,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         ActivatePanel(_loginUIPanel.name);
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     private void Update()
@@ -190,6 +191,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public void OnJoinRandomRoomButtonClicked()
+    {
+        ActivatePanel(_joinRandomRoomUIPanel.name);
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public void OnStartButtonClicked()
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("GameScene");
+        }
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -306,6 +321,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         ClearRoomListView();
         _cachedRoomList.Clear();
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.Log(message);
+
+        string roomName = "Room " + Random.Range(1000, 10000);
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 20;
+
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
     #endregion
