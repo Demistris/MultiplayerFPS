@@ -132,6 +132,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2536132899714421974, guid: 5bff62e32f669a94283628ecce3c5979,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2536132899714421970, guid: 5bff62e32f669a94283628ecce3c5979,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -567,6 +572,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 9078881531926357708, guid: dda101bdf42e5f547834a609f10cab27,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9078881531926357697, guid: dda101bdf42e5f547834a609f10cab27,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -642,6 +652,11 @@ PrefabInstance:
       propertyPath: FixedTouchField
       value: 
       objectReference: {fileID: 270092761}
+    - target: {fileID: 5341976536405167950, guid: dda101bdf42e5f547834a609f10cab27,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dda101bdf42e5f547834a609f10cab27, type: 3}
 --- !u!1 &1246581845
