@@ -81,7 +81,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public MovementSettings movementSettings = new MovementSettings();
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
-
+        public Vector2 JoystickInputAxis;
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
@@ -214,9 +214,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
             Vector2 input = new Vector2
                 {
-                    x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                    y = CrossPlatformInputManager.GetAxis("Vertical")
-                };
+                    x = JoystickInputAxis.x,
+                    y = JoystickInputAxis.y
+            };
 			movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
         }
