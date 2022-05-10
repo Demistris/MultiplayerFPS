@@ -2566,6 +2566,7 @@ GameObject:
   - component: {fileID: 8227037338360138849}
   - component: {fileID: 5840650312232474733}
   - component: {fileID: 5008619935563072771}
+  - component: {fileID: 7285958765763470748}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -2822,6 +2823,21 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &7285958765763470748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078881531926357708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845c7b85998050b43a5d41c02108760f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 8706651941186235394}
+  _hitEffectPrefab: {fileID: 7856772543715917610, guid: f2f3d9086bf2c084b8e74a162fe8e9da,
+    type: 3}
 --- !u!1 &9078881531934242207
 GameObject:
   m_ObjectHideFlags: 0
