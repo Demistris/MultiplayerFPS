@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {
+    public PlayerUI PlayerUI => _playerUI;
+
     [SerializeField] private GameObject[] _fpsHands;
     [SerializeField] private GameObject[] _soldier;
-    [SerializeField] private GameObject _playerUIPrefab;
+    [SerializeField] private PlayerUI _playerUIPrefab;
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private RigidbodyFirstPersonController _rigidbodyController;
     [SerializeField] private Camera _camera;
     [SerializeField] private Animator _animator;
     [SerializeField] private Shooting _shooter;
+
+    private PlayerUI _playerUI;
 
     private void Start()
     {
@@ -52,10 +55,10 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
 
     private void InstantiatePlayerUI()
     {
-        GameObject playerUI = Instantiate(_playerUIPrefab);
-        _playerMovementController.Joystick = playerUI.GetComponentInChildren<Joystick>();
-        _playerMovementController.FixedTouchField = playerUI.GetComponentInChildren<FixedTouchField>();
-        playerUI.GetComponentInChildren<Button>().onClick.AddListener(() => _shooter.Fire());
+        _playerUI = Instantiate(_playerUIPrefab);
+        _playerMovementController.Joystick = _playerUI.FixedJoystick;
+        _playerMovementController.FixedTouchField = _playerUI.RotationTouchField;
+        _playerUI.FireButton.onClick.AddListener(() => _shooter.Fire());
 
         _camera.enabled = true;
     }

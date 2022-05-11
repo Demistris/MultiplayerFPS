@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System.Collections;
 
 public class Shooting : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private PlayerSetup _playerSetup;
     [SerializeField] private Camera _camera;
     [SerializeField] private GameObject _hitEffectPrefab;
     [SerializeField] private Animator _animator;
+    [SerializeField] private PlayerMovementController _playerMovementController;
 
     [Header("Health")]
     [SerializeField] private float _startHealth = 100f;
@@ -16,8 +19,7 @@ public class Shooting : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        _heatlh = _startHealth;
-        _healthBar.fillAmount = _heatlh / _startHealth;
+        RegainHealth();
     }
 
     public void Fire()
@@ -65,6 +67,39 @@ public class Shooting : MonoBehaviourPunCallbacks
         if(photonView.IsMine)
         {
             _animator.SetBool("IsDead", true);
+            StartCoroutine(Respawn());
         }
+    }
+
+    IEnumerator Respawn()
+    {
+        Text respawnText = _playerSetup.PlayerUI.RespawnText;
+
+        float respawnTime = 8f;
+
+        while(respawnTime > 0f)
+        {
+            yield return new WaitForSeconds(1f);
+            respawnTime -= 1f;
+
+            _playerMovementController.enabled = false;
+            respawnText.text = "You are killed! Respawning at: " + respawnTime.ToString(".00");
+        }
+
+        _animator.SetBool("IsDead", false);
+        respawnText.text = "";
+
+        int randomPosition = Random.Range(-20, 20);
+        transform.position = new Vector3(randomPosition, 0f, randomPosition);
+        _playerMovementController.enabled = true;
+
+        photonView.RPC("RegainHealth", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void RegainHealth()
+    {
+        _heatlh = _startHealth;
+        _healthBar.fillAmount = _heatlh / _startHealth;
     }
 }

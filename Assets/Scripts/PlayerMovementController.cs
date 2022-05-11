@@ -3,9 +3,9 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    //[HideInInspector]
+    [HideInInspector]
     public Joystick Joystick;
-    //[HideInInspector]
+    [HideInInspector]
     public FixedTouchField FixedTouchField;
 
     [SerializeField] private RigidbodyFirstPersonController _rigidbodyController;
@@ -13,20 +13,20 @@ public class PlayerMovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        SetInputs();
-        SetAnimations();
-        Running();
+        if (Joystick != null)
+        {
+            SetInputs();
+            SetAnimations();
+            Running();
+        }
     }
 
     private void SetInputs()
     {
-        if (Joystick != null)
-        {
-            _rigidbodyController.JoystickInputAxis.x = Joystick.Horizontal;
-            _rigidbodyController.JoystickInputAxis.y = Joystick.Vertical;
+        _rigidbodyController.JoystickInputAxis.x = Joystick.Horizontal;
+        _rigidbodyController.JoystickInputAxis.y = Joystick.Vertical;
 
-            _rigidbodyController.mouseLook.LookInputAxis = FixedTouchField.TouchDist;
-        }
+        _rigidbodyController.mouseLook.LookInputAxis = FixedTouchField.TouchDist;
     }
 
     private void SetAnimations()

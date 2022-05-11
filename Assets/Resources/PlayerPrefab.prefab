@@ -2842,8 +2842,8 @@ GameObject:
   - component: {fileID: 9078881531926357696}
   - component: {fileID: 5008619935563072771}
   - component: {fileID: 8227037338360138849}
-  - component: {fileID: 5430061069084606725}
   - component: {fileID: 1369706662863763752}
+  - component: {fileID: 5430061069084606725}
   - component: {fileID: 3540162876520856969}
   - component: {fileID: 7285958765763470748}
   m_Layer: 0
@@ -2995,31 +2995,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &5430061069084606725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9078881531926357708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e1400e7c87b76741a9d4064841fd56f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fpsHands:
-  - {fileID: 9078881531673883478}
-  - {fileID: 9078881532284595170}
-  _soldier:
-  - {fileID: 9078881531560367744}
-  - {fileID: 9078881531028561771}
-  _playerUIPrefab: {fileID: 2536132899714421974, guid: 5bff62e32f669a94283628ecce3c5979,
-    type: 3}
-  _playerMovementController: {fileID: 3540162876520856969}
-  _rigidbodyController: {fileID: 1369706662863763752}
-  _camera: {fileID: 8706651941186235394}
-  _animator: {fileID: 5840650312232474733}
-  _shooter: {fileID: 7285958765763470748}
 --- !u!114 &1369706662863763752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3091,6 +3066,31 @@ MonoBehaviour:
     airControl: 1
     shellOffset: 0
   JoystickInputAxis: {x: 0, y: 0}
+--- !u!114 &5430061069084606725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078881531926357708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1400e7c87b76741a9d4064841fd56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fpsHands:
+  - {fileID: 9078881531673883478}
+  - {fileID: 9078881532284595170}
+  _soldier:
+  - {fileID: 9078881531560367744}
+  - {fileID: 9078881531028561771}
+  _playerUIPrefab: {fileID: 5090143593242915275, guid: 5bff62e32f669a94283628ecce3c5979,
+    type: 3}
+  _playerMovementController: {fileID: 3540162876520856969}
+  _rigidbodyController: {fileID: 1369706662863763752}
+  _camera: {fileID: 8706651941186235394}
+  _animator: {fileID: 5840650312232474733}
+  _shooter: {fileID: 7285958765763470748}
 --- !u!114 &3540162876520856969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3119,10 +3119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845c7b85998050b43a5d41c02108760f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSetup: {fileID: 5430061069084606725}
   _camera: {fileID: 8706651941186235394}
   _hitEffectPrefab: {fileID: 7856772543715917610, guid: f2f3d9086bf2c084b8e74a162fe8e9da,
     type: 3}
   _animator: {fileID: 5840650312232474733}
+  _playerMovementController: {fileID: 3540162876520856969}
   _startHealth: 100
   _healthBar: {fileID: 5357841415055369366}
 --- !u!1 &9078881531934242207
