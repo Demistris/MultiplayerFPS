@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using UnityStandardAssets.Characters.FirstPerson;
 
@@ -11,6 +12,7 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
     [SerializeField] private RigidbodyFirstPersonController _rigidbodyController;
     [SerializeField] private Camera _camera;
     [SerializeField] private Animator _animator;
+    [SerializeField] private Shooting _shooter;
 
     private void Start()
     {
@@ -53,6 +55,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
         GameObject playerUI = Instantiate(_playerUIPrefab);
         _playerMovementController.Joystick = playerUI.GetComponentInChildren<Joystick>();
         _playerMovementController.FixedTouchField = playerUI.GetComponentInChildren<FixedTouchField>();
+        playerUI.GetComponentInChildren<Button>().onClick.AddListener(() => _shooter.Fire());
+
         _camera.enabled = true;
     }
 }

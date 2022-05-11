@@ -6,6 +6,7 @@ public class Shooting : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private GameObject _hitEffectPrefab;
+    [SerializeField] private Animator _animator;
 
     [Header("Health")]
     [SerializeField] private float _startHealth = 100f;
@@ -26,15 +27,14 @@ public class Shooting : MonoBehaviourPunCallbacks
 
         if(Physics.Raycast(ray, out hit, 100f))
         {
-            GameObject hitEffect = Instantiate(_hitEffectPrefab, hit.point, Quaternion.identity);
-            Destroy(hitEffect, 0.5f);
+            photonView.RPC("CreateHitEffect", RpcTarget.All, hit.point);
 
             GameObject hitObject = hit.collider.gameObject;
-            PhotonView photonView = hitObject.GetComponent<PhotonView>();
+            PhotonView hitPhotonView = hitObject.GetComponent<PhotonView>();
 
-            if (hitObject.CompareTag("Player") && !photonView.IsMine)
+            if (hitObject.CompareTag("Player") && !hitPhotonView.IsMine)
             {
-                photonView.RPC("TakeDamage", RpcTarget.AllBuffered, 10f);
+                hitPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, 10f);
             }
         }
     }
@@ -48,8 +48,23 @@ public class Shooting : MonoBehaviourPunCallbacks
 
         if(_heatlh <= 0f)
         {
-            //Die();
+            Die();
             Debug.Log(info.Sender.NickName + " killed " + info.photonView.Owner.NickName);
+        }
+    }
+
+    [PunRPC]
+    private void CreateHitEffect(Vector3 position)
+    {
+        GameObject hitEffect = Instantiate(_hitEffectPrefab, position, Quaternion.identity);
+        Destroy(hitEffect, 0.5f);
+    }
+
+    private void Die()
+    {
+        if(photonView.IsMine)
+        {
+            _animator.SetBool("IsDead", true);
         }
     }
 }

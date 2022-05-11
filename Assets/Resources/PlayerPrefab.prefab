@@ -2973,6 +2973,9 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Vertical
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsDead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -3016,6 +3019,7 @@ MonoBehaviour:
   _rigidbodyController: {fileID: 1369706662863763752}
   _camera: {fileID: 8706651941186235394}
   _animator: {fileID: 5840650312232474733}
+  _shooter: {fileID: 7285958765763470748}
 --- !u!114 &1369706662863763752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3118,6 +3122,7 @@ MonoBehaviour:
   _camera: {fileID: 8706651941186235394}
   _hitEffectPrefab: {fileID: 7856772543715917610, guid: f2f3d9086bf2c084b8e74a162fe8e9da,
     type: 3}
+  _animator: {fileID: 5840650312232474733}
   _startHealth: 100
   _healthBar: {fileID: 5357841415055369366}
 --- !u!1 &9078881531934242207
